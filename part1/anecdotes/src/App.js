@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
 const Button = ({ handleClick, text }) => (
-  <div>
+  <>
     <button onClick={handleClick}>
       {text}
     </button>
-  </div>
+  </>
 )
 
 const App = () => {
@@ -18,19 +18,33 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
   ]
-   
+  
+  const max = anecdotes.length
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(Array(max).fill(0))
   
   const handleClick = () => {
-    const max = anecdotes.length
     const random = () => Math.floor(Math.random() * max)
     setSelected(random)
+  }
+  const handleVotes = () => {
+    const copy = [...votes]
+    copy[selected] += 1
+    setVotes(copy)
   }
   
   return (
     <div>
-      {anecdotes[selected]}
-      <Button handleClick={handleClick} text='next anecdote' />
+      <p>
+        {anecdotes[selected]}
+      </p>
+      <div>
+        <span>has {votes[selected]} votes</span>
+      </div>
+      <div>
+        <Button handleClick={handleVotes} text='vote' />
+        <Button handleClick={handleClick} text='next anecdote' />
+      </div>
     </div>
   )
 }
