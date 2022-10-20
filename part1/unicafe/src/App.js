@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const Header = ({ text }) => <h1>{text}</h1>
 
-const Part = ({ name, value }) => {
+const StatsLine = ({ name, value }) => {
   return (
   <tr>
     <td>{name} </td>  
@@ -11,22 +11,56 @@ const Part = ({ name, value }) => {
   )
 }
 
-const Content = ({ parts }) => {
-  const stats = parts.map((part) => { 
-    const name = Object.keys(part)
+// const SumFeedbacks = ({ feedbacks }) => {
+//   const sum = feedbacks.reduce((accumulator, category) => accumulator + category[Object.keys(category)], 0);
+//   return (
+//     <>
+//       <Part key={'sum'} name={'sum'} value={sum} />
+//     </>
+//   )
+// }
+
+
+const Statistics = ({ feedbacks }) => {
+  let positive = 0;
+  let average = 0;
+  const sum = feedbacks.reduce((accumulator, category) => accumulator + category[Object.keys(category)], 0);
+  if (sum === 0){
+    return <div><p>No feedback given</p></div>
+  }
+  const stats = feedbacks.map((category) => { 
+    const name = Object.keys(category)
+    if (category.hasOwnProperty('good')) {
+      average += category['good'];
+      positive += category['good']; 
+    }
+    if (category.hasOwnProperty('bad')) {
+      average -= category['bad'];
+    }
+
     return (
-      <Part 
+      <StatsLine 
         key={name} 
         name={name} 
-        value={part[name]}
+        value={category[name]}
       />
     )
   })
+  if (average !== 0) {
+    average = average / sum;
+  }
+  if (positive !== 0) {
+    positive = positive * 100 / sum;
+  }
 
   return (
     <table>
       <tbody>
         {stats}
+        <StatsLine key={'sum'} name={'sum'} value={sum}/>
+        <StatsLine key={'average'} name={'average'} value={average}/>
+        <StatsLine key={'positive'} name={'positive'} value={positive + ' %'}/>
+        {/* <Part key={'sum'} name={'sum'} value={sum} /> */}
       </tbody>
     </table>
   )
@@ -54,7 +88,7 @@ const App = () => {
       <Button handleClick={()=>handleClick(neutral, setNeutral)} text='neutral' />
       <Button handleClick={()=>handleClick(bad, setBad)} text='bad' />
       <Header text={'statistics'} />
-      <Content parts={[{good: good}, {neutral: neutral}, {bad: bad}]} />
+      <Statistics feedbacks={[{good: good}, {neutral: neutral}, {bad: bad}]} />
     </div>
   )
 }
