@@ -2,24 +2,14 @@ import { useState } from 'react'
 
 const Header = ({ text }) => <h1>{text}</h1>
 
-const StatsLine = ({ name, value }) => {
+const StatisticLine = ({ text, value }) => {
   return (
   <tr>
-    <td>{name} </td>  
+    <td>{text}</td>  
     <td>{value}</td>
   </tr>
   )
 }
-
-// const SumFeedbacks = ({ feedbacks }) => {
-//   const sum = feedbacks.reduce((accumulator, category) => accumulator + category[Object.keys(category)], 0);
-//   return (
-//     <>
-//       <Part key={'sum'} name={'sum'} value={sum} />
-//     </>
-//   )
-// }
-
 
 const Statistics = ({ feedbacks }) => {
   let positive = 0;
@@ -39,9 +29,9 @@ const Statistics = ({ feedbacks }) => {
     }
 
     return (
-      <StatsLine 
+      <StatisticLine 
         key={name} 
-        name={name} 
+        text={name} 
         value={category[name]}
       />
     )
@@ -57,10 +47,9 @@ const Statistics = ({ feedbacks }) => {
     <table>
       <tbody>
         {stats}
-        <StatsLine key={'sum'} name={'sum'} value={sum}/>
-        <StatsLine key={'average'} name={'average'} value={average}/>
-        <StatsLine key={'positive'} name={'positive'} value={positive + ' %'}/>
-        {/* <Part key={'sum'} name={'sum'} value={sum} /> */}
+        <StatisticLine key={'sum'} text={'sum'} value={sum}/>
+        <StatisticLine key={'average'} text={'average'} value={average}/>
+        <StatisticLine key={'positive'} text={'positive'} value={positive + ' %'}/>
       </tbody>
     </table>
   )
