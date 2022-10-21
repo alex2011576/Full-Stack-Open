@@ -10,8 +10,19 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    setPersons(persons.concat({ name: newName }));
-    setNewName("");
+    if (newName.trim() === "") {
+      alert("Please, enter the name");
+      return;
+    }
+    const duplicates = persons.filter(
+      (person) => person.name === newName.trim()
+    );
+    if (duplicates.length) {
+      alert(`${newName.trim()} is already added to phonebook`);
+    } else {
+      setPersons(persons.concat({ name: newName.trim() }));
+      setNewName("");
+    }
   };
 
   const handleBookChange = (event) => {
