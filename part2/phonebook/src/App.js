@@ -1,25 +1,7 @@
 import { useState } from "react";
-
-const Filter = ({ onFilterChange }) => {
-  const [newFilter, setNewFilter] = useState("");
-  const handleInputChange = (event) => {
-    setNewFilter(event.target.value);
-    onFilterChange(event.target.value);
-  };
-  return (
-    <div>
-      filter shown with <input value={newFilter} onChange={handleInputChange} />
-    </div>
-  );
-};
-
-const Person = ({ person }) => {
-  return (
-    <div>
-      {person.name} {person.number}
-    </div>
-  );
-};
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
+import Filter from "./components/Filter";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -32,13 +14,24 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
 
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value);
+  };
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value);
+  };
+
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value);
+  };
+
   const addPerson = (event) => {
     event.preventDefault();
     if (newName.trim() === "" || newNumber.trim() === "") {
       alert("Please, enter the name and number");
       return;
     }
-
     const nameDuplicates = persons.some(
       (person) => person.name === newName.trim()
     );
@@ -57,17 +50,6 @@ const App = () => {
     }
   };
 
-  const handleNameChange = (event) => {
-    setNewName(event.target.value);
-  };
-
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
-  };
-  const handleFilterChange = (value) => {
-    setNewFilter(value);
-  };
-
   const personsToShow = persons.filter((person) =>
     person.name.toUpperCase().includes(newFilter.toUpperCase())
   );
@@ -75,23 +57,17 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter onFilterChange={handleFilterChange} />
+      <Filter newFilter={newFilter} onFilterChange={handleFilterChange} />
       <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        newName={newName}
+        newNumber={newNumber}
+        addPerson={addPerson}
+        NameHandler={handleNameChange}
+        NumberHandler={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      {personsToShow.map((person) => (
-        <Person key={person.id} person={person} />
-      ))}
+      <Persons personsToShow={personsToShow} />
     </div>
   );
 };
