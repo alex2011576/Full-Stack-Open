@@ -1,7 +1,18 @@
 import React from "react";
+import { useState } from "react";
 
 const CountryName = ({ country }) => {
-  return <div>{country.name.common}</div>;
+  const [showCountry, setShowCountry] = useState(false);
+
+  return (
+    <div>
+      {country.name.common}
+      <button onClick={() => setShowCountry(!showCountry)}>
+        {!showCountry ? "show" : "hide"}
+      </button>
+      {showCountry ? <Country country={country} /> : ""}
+    </div>
+  );
 };
 
 const Languages = ({ languages }) => {
