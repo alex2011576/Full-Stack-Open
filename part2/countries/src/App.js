@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import PersonForm from "./components/PersonForm";
 import DisplayCountries from "./components/DisplayCountries";
 import Filter from "./components/Filter";
 
-// https://restcountries.com/v3.1/all
 function App() {
   const [countries, setCountries] = useState([]);
   const [newFilter, setNewFilter] = useState("");
