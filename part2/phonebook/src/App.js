@@ -65,6 +65,18 @@ const App = () => {
     }
   };
 
+  const deletePerson = (id) => {
+    contactService
+      .deleteObject(id)
+      .then((response) => {
+        setPersons(persons.filter((person) => person.id !== id));
+      })
+      .catch((error) => {
+        alert(`Deletion failed`);
+        console.log(error);
+      });
+  };
+
   const personsToShow = persons.filter((person) =>
     person.name.toUpperCase().includes(newFilter.toUpperCase())
   );
@@ -82,7 +94,7 @@ const App = () => {
         NumberHandler={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} onDelete={deletePerson} />
     </div>
   );
 };
