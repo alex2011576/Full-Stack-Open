@@ -3,12 +3,34 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import contactService from "./services/contacts";
+import "./index.css";
+
+const Notification = ({ message }) => {
+  let notificationColor = {
+    color: "red",
+  };
+
+  if (message === null) {
+    return null;
+  } else if (message.hasOwnProperty("type") && message.type === "success") {
+    notificationColor = {
+      color: "green",
+    };
+  }
+
+  return (
+    <div className="alert" style={notificationColor}>
+      {message.content}
+    </div>
+  );
+};
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     contactService
@@ -17,7 +39,16 @@ const App = () => {
         setPersons(initialContacts);
       })
       .catch((error) => {
-        alert(`failed to connect to the phonebook`);
+        if (notification !== null) {
+          clearTimeout(notification.timeout);
+        }
+        setNotification({
+          type: "error",
+          content: `Connection to the phonebook has failed`,
+          timeout: setTimeout(() => {
+            setNotification(null);
+          }, 5000),
+        });
         console.log(error);
       });
   }, []);
@@ -61,12 +92,32 @@ const App = () => {
                 p.id !== returnedPerson.id ? p : returnedPerson
               )
             );
+            if (notification !== null) {
+              clearTimeout(notification.timeout);
+            }
+            setNotification({
+              type: "success",
+              content: `Information about ${returnedPerson.name} was successfully updated`,
+              timeout: setTimeout(() => {
+                setNotification(null);
+              }, 5000),
+            });
             setNewName("");
             setNewNumber("");
           })
           .catch((error) => {
-            alert(`${duplicate.name} was already deleted from server`);
-            setPersons(persons.filter((n) => n.id !== duplicate.id));
+            // alert(`${duplicate.name} was already deleted from server`);
+            setPersons(persons.filter((p) => p.id !== duplicate.id));
+            if (notification !== null) {
+              clearTimeout(notification.timeout);
+            }
+            setNotification({
+              type: "error",
+              content: `${duplicate.name} was already deleted from server or connection failed`,
+              timeout: setTimeout(() => {
+                setNotification(null);
+              }, 5000),
+            });
             console.log(error);
           });
       }
@@ -79,11 +130,31 @@ const App = () => {
         .create(newPerson)
         .then((returnedPerson) => {
           setPersons(persons.concat(returnedPerson));
+          if (notification !== null) {
+            clearTimeout(notification.timeout);
+          }
+          setNotification({
+            type: "success",
+            content: `Added ${returnedPerson.name}`,
+            timeout: setTimeout(() => {
+              setNotification(null);
+            }, 5000),
+          });
           setNewName("");
           setNewNumber("");
         })
         .catch((error) => {
-          alert(`failed to add ${newPerson.name} to the phonebook`);
+          // alert(`failed to add ${newPerson.name} to the phonebook`);
+          if (notification !== null) {
+            clearTimeout(notification.timeout);
+          }
+          setNotification({
+            type: "error",
+            content: `Failed to add ${newPerson.name} to the phonebook`,
+            timeout: setTimeout(() => {
+              setNotification(null);
+            }, 5000),
+          });
           console.log(error);
         });
     }
@@ -94,9 +165,29 @@ const App = () => {
       .deleteObject(id)
       .then((response) => {
         setPersons(persons.filter((person) => person.id !== id));
+        if (notification !== null) {
+          clearTimeout(notification.timeout);
+        }
+        setNotification({
+          type: "success",
+          content: `Deletion succeded`,
+          timeout: setTimeout(() => {
+            setNotification(null);
+          }, 5000),
+        });
       })
       .catch((error) => {
-        alert(`Deletion failed`);
+        setPersons(persons.filter((p) => p.id !== id));
+        if (notification !== null) {
+          clearTimeout(notification.timeout);
+        }
+        setNotification({
+          type: "error",
+          content: `Deletion failed, it is better to reload this page!`,
+          timeout: setTimeout(() => {
+            setNotification(null);
+          }, 5000),
+        });
         console.log(error);
       });
   };
@@ -107,7 +198,8 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <Notification message={notification} />
       <Filter newFilter={newFilter} onFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm
