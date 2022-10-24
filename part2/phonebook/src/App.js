@@ -44,12 +44,36 @@ const App = () => {
     );
 
     if (nameDuplicates) {
-      alert(`${newName.trim()} is already added to phonebook`);
+      const duplicate = persons.find(
+        (person) => person.name === newName.trim()
+      );
+      if (
+        window.confirm(
+          `${duplicate.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const updatedPerson = { ...duplicate, number: newNumber };
+        contactService
+          .update(updatedPerson.id, updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((p) =>
+                p.id !== returnedPerson.id ? p : returnedPerson
+              )
+            );
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((error) => {
+            alert(`${duplicate.name} was already deleted from server`);
+            setPersons(persons.filter((n) => n.id !== duplicate.id));
+            console.log(error);
+          });
+      }
     } else {
       const newPerson = {
         name: newName.trim(),
         number: newNumber.trim(),
-        id: persons.length + 1,
       };
       contactService
         .create(newPerson)
