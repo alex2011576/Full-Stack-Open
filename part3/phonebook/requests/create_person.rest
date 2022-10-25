@@ -1,0 +1,23 @@
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Aleksei Shatalov",
+    "number": "111-11-111-11"
+}
+### Wrong POST below
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "",
+    "number": "111-11-111-11"
+}
+### Wrong POST not-unique name
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Arto Hellas",
+    "number": "111-11-111-11"
+}
