@@ -4,6 +4,7 @@ const initialState = {
   bad: 0,
 };
 
+// eslint-disable-next-line default-param-last
 const counterReducer = (state = initialState, action) => {
   // eslint-disable-next-line no-console
   console.log(action);
