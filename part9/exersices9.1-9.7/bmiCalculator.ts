@@ -20,7 +20,19 @@ const parseBmiArguments = (args: Array<string>): BmiParameters => {
         throw new Error('Provided values were not numbers');
     }
 }
-const calculateBmi = (height: number, weight: number): string => {
+
+export const bmiParamCheck = (param: any): boolean => {
+    if (param) {
+        if (typeof param === 'string') {
+            if (!isNaN(Number(param)) && Number(param) > 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
+
+export const calculateBmi = (height: number, weight: number): string => {
 
     const bmi = weight / height / height * 10000;
 

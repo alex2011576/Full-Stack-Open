@@ -1,0 +1,4 @@
+###Working request
+http://localhost:3002/bmi?height=180&weight=72
+###malformated request
+http://localhost:3002/bmi?height=180&weight=
