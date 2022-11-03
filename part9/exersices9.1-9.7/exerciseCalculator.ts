@@ -21,7 +21,7 @@ const parseArguments = (args: Array<string>): Report => {
 
     if (!isNaN(Number(args[2])) && (Number(args[2]) >= 0)) {
         const target = Number(args[2]);
-        let hours = [];
+        const hours = [];
         for (let i = 3; i < args.length; i++) {
             if (isNaN(Number(args[i])))
                 throw new Error('Provided values were not numbers!');
@@ -30,11 +30,11 @@ const parseArguments = (args: Array<string>): Report => {
         return {
             target: target,
             hours: hours
-        }
+        };
     } else {
         throw new Error('Provided values were not numbers!');
     }
-}
+};
 
 const calculateExercises = (args: Array<number>, target: number): Return => {
 
@@ -47,15 +47,15 @@ const calculateExercises = (args: Array<number>, target: number): Return => {
 
     if (average <= target * 0.5 && target !== 0) {
         rating = 1;
-        ratingDescription = 'not even half the target'
+        ratingDescription = 'not even half the target';
     }
     else if (average < target) {
         rating = 2;
-        ratingDescription = 'not too bad but could be better!'
+        ratingDescription = 'not too bad but could be better!';
     }
     else {
         rating = 3;
-        ratingDescription = 'Target is achieved!'
+        ratingDescription = 'Target is achieved!';
     }
 
     return {
@@ -73,7 +73,7 @@ try {
     const { target, hours } = parseArguments(process.argv);
     console.log(calculateExercises(hours, target));
 } catch (error: unknown) {
-    let errorMessage = 'Something bad happened.'
+    let errorMessage = 'Something bad happened.';
     if (error instanceof Error) {
         errorMessage += ' Error: ' + error.message;
     }

@@ -15,24 +15,13 @@ const parseBmiArguments = (args: Array<string>): BmiParameters => {
         return {
             height: height,
             weight: weight
-        }
+        };
     } else {
         throw new Error('Provided values were not numbers');
     }
-}
-
-export const bmiParamCheck = (param: any): boolean => {
-    if (param) {
-        if (typeof param === 'string') {
-            if (!isNaN(Number(param)) && Number(param) > 0) {
-                return true;
-            }
-        }
-    }
-    return false;
 };
 
-export const calculateBmi = (height: number, weight: number): string => {
+const calculateBmi = (height: number, weight: number): string => {
 
     const bmi = weight / height / height * 10000;
 
@@ -57,13 +46,13 @@ export const calculateBmi = (height: number, weight: number): string => {
 };
 
 try {
+    console.log(process.argv);
     const { height, weight } = parseBmiArguments(process.argv);
     console.log(calculateBmi(height, weight));
 } catch (error: unknown) {
-    let errorMessage = 'Something bad happened.'
+    let errorMessage = 'Something bad happened.';
     if (error instanceof Error) {
         errorMessage += ' Error: ' + error.message;
     }
     console.log(errorMessage);
 }
-//console.log(calculateBmi(180, 74))
