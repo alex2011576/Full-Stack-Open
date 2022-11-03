@@ -10,32 +10,6 @@ interface Return {
     average: number,
 }
 
-// interface Report {
-//     target: number,
-//     hours: Array<number>
-// }
-
-// const parseArguments = (args: Array<string>): Report => {
-
-//     if (args.length < 4) throw new Error('Not enough arguments');
-
-//     if (!isNaN(Number(args[2])) && (Number(args[2]) >= 0)) {
-//         const target = Number(args[2]);
-//         const hours = [];
-//         for (let i = 3; i < args.length; i++) {
-//             if (isNaN(Number(args[i])))
-//                 throw new Error('Provided values were not numbers!');
-//             hours.push(Number(args[i]));
-//         }
-//         return {
-//             target: target,
-//             hours: hours
-//         };
-//     } else {
-//         throw new Error('Provided values were not numbers!');
-//     }
-// };
-
 export const calculateExercises = (args: Array<number>, target: number): Return => {
 
     const periodLength: number = args.length;
@@ -47,7 +21,7 @@ export const calculateExercises = (args: Array<number>, target: number): Return 
 
     if (average <= target * 0.5 && target !== 0) {
         rating = 1;
-        ratingDescription = 'not even half the target';
+        ratingDescription = 'bad';
     }
     else if (average < target) {
         rating = 2;
