@@ -1,16 +1,16 @@
 import patients from '../../data/patientsData';
-import { NonSensitivePatientEntry, PatientEntry, NewPatientEntry } from '../types';
+import { PublicPatient, NewPatientEntry, Patient } from '../types';
 import { v1 as uuid } from 'uuid';
 
-const PatientById = (id: string): PatientEntry | undefined => {
+const PatientById = (id: string): Patient | undefined => {
     return patients.find(entry => entry.id === id);
 };
 
-const getPatients = (): Array<PatientEntry> => {
+const getPatients = (): Array<Patient> => {
     return patients;
 };
 
-const getNonSensitivePatients = (): Array<NonSensitivePatientEntry> => {
+const getNonSensitivePatients = (): PublicPatient[] => {
     return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
         id,
         name,
@@ -20,7 +20,7 @@ const getNonSensitivePatients = (): Array<NonSensitivePatientEntry> => {
     }));
 };
 
-const addPatient = (patient: NewPatientEntry): PatientEntry => {
+const addPatient = (patient: NewPatientEntry): Patient => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const id = String(uuid());
     const NewPatientEntry = {

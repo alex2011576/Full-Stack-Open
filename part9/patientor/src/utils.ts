@@ -15,6 +15,12 @@ const isGender = (gender: any): gender is Gender => {
     return Object.values(Gender).includes(gender);
 };
 
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// const isEntries = (entries: any): entries is Entry[] => {
+//     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+//     return 1 == 1;
+// };
+
 const parseDate = (date: unknown): string => {
     if (!date || !isString(date) || !isDate(date)) {
         throw new Error('Incorrect or missing date of birth: ' + date);
@@ -49,6 +55,12 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
 };
 
+// const parseEntries = (entries: unknown): Entry[] => {
+//     if (!entries || !isEntries(entries)) {
+//         throw new Error('Incorrect or missing entry: ' + entries);
+//     }
+//     return entries;
+// };
 
 
 export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatientEntry => {
@@ -58,6 +70,7 @@ export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fie
         ssn: parseSsn(ssn),
         gender: parseGender(gender),
         occupation: parseOccupation(occupation),
+        entries: []
     };
     return newPatient;
 };

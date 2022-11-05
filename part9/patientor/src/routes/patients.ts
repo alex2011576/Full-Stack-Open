@@ -13,7 +13,7 @@ router.get('/', (_req, res) => {
 
 router.get('/:id', (req, res) => {
     const patient = patientsService.PatientById(String(req.params.id));
-    console.log('Fetching patients!');
+    console.log(`Fetching patient ${patient?.name}!`);
     if (patient) {
         res.send(patient);
     } else {
