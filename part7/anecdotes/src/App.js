@@ -36,7 +36,7 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => 
+      {anecdotes.map(anecdote =>
         <li key={anecdote.id}>
           <Link to={`anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
         </li>
@@ -53,7 +53,7 @@ const About = () => (
     <em>An anecdote is a brief, revealing account of an individual person or an incident.
       Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself,
       such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative.
-      An anecdote is "a story with a point."</em>
+      An anecdote is &quot;a story with a point.&quot;</em>
 
     <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
   </div>
@@ -72,6 +72,7 @@ const CreateNew = (props) => {
   const content = useField('text')
   const author = useField('text')
   const info = useField('text')
+
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
@@ -85,12 +86,12 @@ const CreateNew = (props) => {
     navigate('/')
   }
 
-	const handleReset = (e) => {
-		e.preventDefault()
-		content.onChange("")
-		author.onChange("")
-		info.onChange("")
-	}
+  const handleReset = (e) => {
+    e.preventDefault()
+    content.onChange('')
+    author.onChange('')
+    info.onChange('')
+  }
 
   return (
     <div>
@@ -109,7 +110,7 @@ const CreateNew = (props) => {
           <input name='info' {...info} />
         </div>
         <button>create</button>
-        <button value="" onClick={handleReset}>reset</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   )
@@ -135,17 +136,17 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      setNotification(null);
-    }, 5000);
+      setNotification(null)
+    }, 5000)
     return () => {
-      clearTimeout(timer);
-    };
-  }, [notification]);
+      clearTimeout(timer)
+    }
+  }, [notification])
 
-  const match = useMatch('/anecdotes/:id');
+  const match = useMatch('/anecdotes/:id')
 
   const anecdote = match
     ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
@@ -154,7 +155,7 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
-    setNotification(anecdote.content);
+    setNotification(anecdote.content)
   }
 
   // const anecdoteById = (id) =>

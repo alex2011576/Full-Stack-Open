@@ -1,18 +1,18 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 export const useField = (type) => {
 
-    const [value, setValue] = useState('')
+  const [value, setValue] = useState('')
 
-    const onChange = (e) => {
-        e 
-        ? setValue(e.target.value)
-        : setValue("")
-    }
+  const onChange = (e) => {
+    e
+      ? setValue(e.target.value)
+      : setValue('')
+  }
 
-    return {
-        type, 
-        value,
-        onChange
-    }
+  return {
+    type,
+    value,
+    onChange
+  }
 }
