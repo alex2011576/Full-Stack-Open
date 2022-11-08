@@ -1,5 +1,4 @@
-import { Fields, NewPatientEntry, Gender } from "./types";
-
+import { Fields, NewPatientEntry, Gender, Entry, TypeOfEntry } from "./types";
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -15,11 +14,22 @@ const isGender = (gender: any): gender is Gender => {
     return Object.values(Gender).includes(gender);
 };
 
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// const isEntries = (entries: any): entries is Entry[] => {
-//     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-//     return 1 == 1;
-// };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isTypeOfEntry = (entry: any): entry is Entry => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return (Object.values(TypeOfEntry).includes(entry.type));
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isEntries = (entries: any): entries is Entry[] => {
+
+    for (let i = 0; i < entries.length; i++) {
+        if (!isTypeOfEntry(entries[i])) {
+            return false;
+        }
+    }
+    return true;
+};
 
 const parseDate = (date: unknown): string => {
     if (!date || !isString(date) || !isDate(date)) {
@@ -55,22 +65,36 @@ const parseGender = (gender: unknown): Gender => {
     return gender;
 };
 
-// const parseEntries = (entries: unknown): Entry[] => {
-//     if (!entries || !isEntries(entries)) {
-//         throw new Error('Incorrect or missing entry: ' + entries);
-//     }
-//     return entries;
-// };
+const parseEntries = (entries: unknown): Entry[] => {
+    if (!entries || !isEntries(entries)) {
+        throw new Error('Incorrect or missing entries: ' + entries);
+    }
+    return entries;
+};
 
 
-export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatientEntry => {
-    const newPatient: NewPatientEntry = {
-        name: parseName(name),
-        dateOfBirth: parseDate(dateOfBirth),
-        ssn: parseSsn(ssn),
-        gender: parseGender(gender),
-        occupation: parseOccupation(occupation),
-        entries: []
-    };
+export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation, entries }: Fields): NewPatientEntry => {
+    let newPatient: NewPatientEntry;
+    //this is not necessary because TypeScript will automatically check types of entries in local DataFile, 
+    // but I tried to improve it anyways to understand TypeScript safeguarding better and for external Patients Data
+    if (entries) {
+        newPatient = {
+            name: parseName(name),
+            dateOfBirth: parseDate(dateOfBirth),
+            ssn: parseSsn(ssn),
+            gender: parseGender(gender),
+            occupation: parseOccupation(occupation),
+            entries: parseEntries(entries)
+        };
+    } else {
+        newPatient = {
+            name: parseName(name),
+            dateOfBirth: parseDate(dateOfBirth),
+            ssn: parseSsn(ssn),
+            gender: parseGender(gender),
+            occupation: parseOccupation(occupation),
+            entries: []
+        };
+    }
     return newPatient;
 };

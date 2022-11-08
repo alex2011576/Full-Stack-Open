@@ -1,7 +1,14 @@
-import patients from '../../data/patientsData';
+// import patients from '../../data/patientsData';
+import raw_patients from '../../data/patientData2';
 import { PublicPatient, NewPatientEntry, Patient } from '../types';
 import { v1 as uuid } from 'uuid';
+import { toNewPatient } from '../utils';
 
+const patients: Patient[] = raw_patients.map(obj => {
+    const object = toNewPatient(obj) as Patient;
+    object.id = obj.id;
+    return object;
+});
 const PatientById = (id: string): Patient | undefined => {
     return patients.find(entry => entry.id === id);
 };
