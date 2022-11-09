@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { apiBaseUrl } from "../constants";
 import { Box, Button, Typography } from "@material-ui/core";
 import { addFetchedPatient, useStateValue } from "../state";
-import { Gender, Patient, FetchedPatient, Entry} from "../types";
+import { Gender, Patient, FetchedPatient, Entry, Diagnosis} from "../types";
 
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
@@ -23,7 +23,9 @@ import ListItem from '@mui/material/ListItem';
 const PatientInfoPage = () => {
 
     const { id } = useParams<{ id: string }>();
-    const [{ fetchedPatients } , dispatch] = useStateValue();
+    const [{ fetchedPatients, diagnoses } , dispatch] = useStateValue();
+    // console.log(JSON.stringify(diagnoses, null, 4));
+    
     
     const [error, setError] = React.useState<string>('');
 
@@ -98,6 +100,15 @@ const PatientInfoPage = () => {
 	// 	}∏
 	// };
 
+  const findDiagnose = (code: Diagnosis["code"]): Diagnosis["name"] => {
+    if (code in diagnoses) {
+      if (Object.values(diagnoses[code]).includes(code)) {
+        return diagnoses[code].name; 
+      }
+    }
+    return "";
+  };
+
 
     return (
         <div>
@@ -130,7 +141,8 @@ const PatientInfoPage = () => {
                           display: 'list-item',
                           },
                         }}>
-                          {entry.diagnosisCodes?.map(code => <ListItem dense={true} key={code} disablePadding><ListItemText sx={{ml: 0}} primary={code} /></ListItem>)}
+                          {entry.diagnosisCodes?.map(code => <ListItem  key={code} disablePadding><ListItemText sx={{ml: 0}} primary={`${code} ${findDiagnose(code)}`} /></ListItem>)}
+                          {/* {entry.diagnosisCodes?.map(code => <ListItem dense={true} key={code} disablePadding><ListItemText sx={{ml: 0}} primary={code} /></ListItem>)} */}
                         </List>
                         </Box>
                       );
