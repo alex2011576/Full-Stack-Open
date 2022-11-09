@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { Diagnosis, FetchedPatient, Patient } from "../types";
+import React, { createContext, useContext, useReducer } from 'react';
+import { Diagnosis, FetchedPatient, Patient } from '../types';
 
-import { Action } from "./reducer";
+import { Action } from './reducer';
 
 export type State = {
   patients: { [id: string]: Patient };
