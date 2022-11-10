@@ -84,3 +84,15 @@ export interface FetchedPatient {
   dateOfBirth?: string;
   entries: Entry[];
 }
+
+export type EntryFormValues = {
+  type: TypeOfEntry;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes: Array<Diagnosis['code']>;
+  discharge: Discharge;
+  employerName: string;
+  sickLeave: SickLeave;
+  healthCheckRating: HealthCheckRating;
+};

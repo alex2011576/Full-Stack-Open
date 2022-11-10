@@ -2,10 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { apiBaseUrl } from '../constants';
-import { Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import { Box } from '@mui/system';
 import { addFetchedPatient, useStateValue } from '../state';
-import { Gender, FetchedPatient, Entry, Diagnosis } from '../types';
+import { Gender, FetchedPatient, Entry, Diagnosis, EntryFormValues } from '../types';
 
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
@@ -22,6 +22,7 @@ import { styled } from '@mui/material/styles';
 import OccupationalHealthcare from '../components/OccupationalHealthcare';
 import HealthCheck from '../components/HealthCheck';
 import Hospital from '../components/HospitalEntry';
+import AddEntryModal from '../AddEntryModal';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -37,15 +38,24 @@ const PatientInfoPage = () => {
   const [{ fetchedPatients, diagnoses } , dispatch] = useStateValue();
   // console.log(JSON.stringify(diagnoses, null, 4));
   // const [error, setError] = React.useState<string>('');
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
 
   if (!id) {
     return null;
   }
 
-  const patient: FetchedPatient | undefined = Object.values(fetchedPatients).find((patient) => patient.id === id);
+  let patient: FetchedPatient | undefined = Object.values(fetchedPatients).find((patient) => patient.id === id);
 
   React.useEffect(() => {
-    // console.log('useeffect');
+    console.log('useeffect');
     const fetchPatient = async () => {
       if (patient) {
         return ;
@@ -70,6 +80,29 @@ const PatientInfoPage = () => {
     };
     void fetchPatient();
   }, [dispatch, id, patient]);
+
+  const submitNewEntry = async (values: EntryFormValues) => {
+    try {
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${id}/entries`,
+        values
+      );
+      if (newEntry) {
+        patient = undefined;
+      }
+      // dispatch({ type: "ADD_PATIENT", payload: newPatient });
+      // dispatch(add(newEntry));
+      closeModal();
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        console.error(e?.response?.data || 'Unrecognized axios error');
+        setError(String(e?.response?.data?.error) || 'Unrecognized axios error');
+      } else {
+        console.error('Unknown error', e);
+        setError('Unknown error');
+      }
+    }
+  };
 
   if (!patient) {
     return null;
@@ -145,6 +178,15 @@ const PatientInfoPage = () => {
           </Stack>
         </Box>
       </Box>
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button variant="contained" onClick={() => openModal()}>
+        Add New Entry
+      </Button>
       {/* <button onClick={ () => setError(error.concat('3'))} > concat error </button> */}
     </div>
   );
