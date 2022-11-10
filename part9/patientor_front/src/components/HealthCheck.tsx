@@ -23,7 +23,7 @@ const HealthCheck: React.FC<{ entry: HealthCheckEntry, findDiagnose: (code: Diag
         <Typography style={{  fontStyle: 'italic' }}>{entry.description}</Typography>
         <HealthRatingBar showText={false} rating={entry.healthCheckRating} />
         <Typography> diagnosed by {entry.specialist}</Typography>
-        { entry.diagnosisCodes && entry.diagnosisCodes.length &&
+        { entry.diagnosisCodes && Array.isArray(entry.diagnosisCodes) && entry.diagnosisCodes.length &&
           <List
             sx = {{
               listStyleType: 'disc',

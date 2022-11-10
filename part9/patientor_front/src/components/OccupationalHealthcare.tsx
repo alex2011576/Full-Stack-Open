@@ -22,7 +22,7 @@ const OccupationalHealthcare: React.FC<{ entry: OccupationalHealthcareEntry , fi
       <Box sx={{}}>
         <Typography style={{  fontStyle: 'italic' }}>{entry.description}</Typography>
         <Typography> diagnosed by {entry.specialist}</Typography>
-        { entry.diagnosisCodes && entry.diagnosisCodes.length &&
+        { entry.diagnosisCodes && Array.isArray(entry.diagnosisCodes) && entry.diagnosisCodes.length &&
           <List
             sx = {{
               listStyleType: 'disc',

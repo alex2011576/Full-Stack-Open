@@ -152,7 +152,9 @@ const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating =
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isCodes = (codes: any): codes is Array<Diagnosis['code']> => {
-
+    if (!Array.isArray(codes)) {
+        throw new Error('Invalid codes format:' + codes);
+    }
     for (let i = 0; i < codes.length; i++) {
         if (!isString(codes[i])) {
             return false;
