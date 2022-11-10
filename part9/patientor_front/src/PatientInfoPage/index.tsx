@@ -184,7 +184,7 @@ const PatientInfoPage = () => {
         error={error}
         onClose={closeModal}
       />
-      <Button variant="contained" onClick={() => openModal()}>
+      <Button variant="contained" style={{ marginTop: '0.5rem' }} onClick={() => openModal()}>
         Add New Entry
       </Button>
       {/* <button onClick={ () => setError(error.concat('3'))} > concat error </button> */}

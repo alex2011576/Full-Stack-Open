@@ -91,8 +91,10 @@ export type EntryFormValues = {
   date: string;
   specialist: string;
   diagnosisCodes: Array<Diagnosis['code']>;
-  discharge: Discharge;
   employerName: string;
-  sickLeave: SickLeave;
+  startDateSick: string;
+  endDateSick: string;
+  dischargeCriteria: string;
+  dischargeDate: string;
   healthCheckRating: HealthCheckRating;
 };

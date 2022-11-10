@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { ErrorMessage, Field, FieldProps, FormikProps } from 'formik';
+import { ErrorMessage, Field, FieldProps, FormikProps, validateYupSchema } from 'formik';
 import {
   Select,
   FormControl,
@@ -8,9 +8,11 @@ import {
   TextField as TextFieldMUI,
   Typography,
 } from '@material-ui/core';
-import { Diagnosis, Gender, HealthCheckRating, TypeOfEntry } from '../types';
+import { Diagnosis, HealthCheckRating, TypeOfEntry } from '../types';
 import { InputLabel } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
 
 
 export type EntryTypeOption = {
@@ -56,19 +58,37 @@ interface TextProps extends FieldProps {
   placeholder: string;
 }
 
-export const TextField = ({ field, label, placeholder }: TextProps) => (
-  <div style={{ marginBottom: '1em' }}>
-    <TextFieldMUI
-      fullWidth
-      label={label}
-      placeholder={placeholder}
-      {...field}
-    />
-    <Typography variant="subtitle2" style={{ color: 'red' }}>
-      <ErrorMessage name={field.name} />
-    </Typography>
-  </div>
-);
+// export const TextField = ({ field, label, placeholder }: TextProps) => (
+//   <div style={{ marginBottom: '1em' }}>
+//     <TextFieldMUI
+//       fullWidth
+//       label={label}
+//       placeholder={placeholder}
+//       {...field}
+//     />
+//     <Typography variant="subtitle2" style={{ color: 'red' }}>
+//       <ErrorMessage name={field.name} />
+//     </Typography>
+//   </div>
+// );
+
+export const TextField = ({ field, label, placeholder }: TextProps) => {
+  //const nameArr = field.name.split('.');
+  //console.log(typeof field.name);
+
+  return (
+    <div style={{ marginBottom: '1em' }}>
+      <TextFieldMUI
+        fullWidth
+        label={label}
+        placeholder={placeholder}
+        {...field}
+      />
+      <Typography variant="subtitle2" style={{ color: 'red' }}>
+        <ErrorMessage name={`${field.name}`} />
+      </Typography>
+    </div>
+  );};
 
 /*
   for exercises 9.24.-
@@ -117,10 +137,12 @@ export const DiagnosisSelection = ({
 }) => {
   const [selectedDiagnoses, setDiagnoses] = useState<string[]>([]);
   const field = 'diagnosisCodes';
+
   const onChange = (data: string[]) => {
     setDiagnoses([...data]);
     setFieldTouched(field, true);
-    setFieldValue(field, selectedDiagnoses);
+    setFieldValue(field, [...data]);
+    console.log([...data]);
   };
 
   const stateOptions = diagnoses.map((diagnosis) => ({
@@ -132,10 +154,27 @@ export const DiagnosisSelection = ({
   return (
     <FormControl style={{ width: 552, marginBottom: '30px' }}>
       <InputLabel>Diagnoses</InputLabel>
-      <Select multiple value={selectedDiagnoses} onChange={(e) => onChange(e.target.value as string[])} input={<Input />}>
+      <Select
+        multiple
+        value={selectedDiagnoses}
+        onChange={(e) => onChange(e.target.value as string[])}
+        renderValue={(selected) => {
+          if (Array.isArray(selected)) {
+            selected.forEach(a => {
+              if (typeof a !== 'string')
+                return ;
+            });
+            return selected.join(', ');
+          }
+        }
+        }
+        input={<Input />}>
+        {/* <Select multiple value={selectedDiagnoses} onChange={handleChange} input={<Input />}> */}
         {stateOptions.map((option) => (
           <MenuItem key={option.key} value={option.value}>
-            {option.text}
+            {/* {option.text} */}
+            <Checkbox checked={selectedDiagnoses.indexOf(option.value) > -1} />
+            <ListItemText primary={option.text} />
           </MenuItem>
         ))}
       </Select>

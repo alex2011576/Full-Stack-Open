@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Grid, Button } from '@material-ui/core';
-import { Field, Formik, Form } from 'formik';
+import { Field, Formik, Form, ErrorMessage } from 'formik';
 
 import { TextField, SelectField, EntryTypeOption, HealthRatingOption, DiagnosisSelection } from './FormField';
-import { Entry, HealthCheckRating, TypeOfEntry } from '../types';
+import { Discharge, Entry, HealthCheckRating, TypeOfEntry } from '../types';
 import { EntryWithoutId, EntryFormValues } from '../types';
 import { useStateValue } from '../state';
+import { Typography } from '@material-ui/core';
 
 interface Props {
     onSubmit: (values: EntryFormValues) => void;
@@ -36,13 +37,13 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           <Field
             label="Discharge criteria:"
             placeholder="Discharge criteria:"
-            name="discharge.criteria"
+            name="dischargeCriteria"
             component={TextField}
           />
           <Field
             label="Discharge date:"
             placeholder="YYYY-MM-DD"
-            name="discharge.date"
+            name="dischargeDate"
             component={TextField}
           />
         </>
@@ -59,13 +60,13 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           <Field
             label="Sick leave starting date:"
             placeholder="YYYY-MM-DD"
-            name="sickLeave.startDate"
+            name="startDateSick"
             component={TextField}
           />
           <Field
             label="Sick leave ending date:"
             placeholder="Sick leave ending date:"
-            name="sickLeave.endDate"
+            name="endDateSick"
             component={TextField}
           />
         </>
@@ -80,33 +81,37 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       );
     }
   };
+  const isDate = (date: string): boolean => {
+    return Boolean(Date.parse(date));
+  };
+
   return (
     <Formik
       initialValues={{
-        type: TypeOfEntry.HealthCheckEntry,
+        type: TypeOfEntry.HospitalEntry,
         description: '',
         date: '',
         specialist: '',
         diagnosisCodes: [],
+        dischargeDate: '',
+        dischargeCriteria: '',
         employerName: '',
+        startDateSick: '',
+        endDateSick: '',
         healthCheckRating: 0,
-        sickLeave: {
-          startDate: '',
-          endDate: ''
-        },
-        discharge: {
-          date: '',
-          criteria: ''
-        },
       }}
+      enableReinitialize
       onSubmit={onSubmit}
       validate={(values) => {
         const errors: { [field: string]: string } = {};
         const requiredError = 'Field is required';
-        const invalidError = 'Provided value is not valid';
+        const invalidError = 'is not valid';
 
-        if (!values.description) {
+        if (!values.type) {
           errors.description = requiredError;
+        }
+        if (!values.description) {
+          errors['description'] = requiredError;
         }
         if (!values.date) {
           errors.date = requiredError;
@@ -114,13 +119,42 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         if (!values.specialist) {
           errors.specialist= requiredError;
         }
-        if (!values.employerName) {
-          errors.employerName = requiredError;
+        if (values.type === TypeOfEntry.OccupationalHealthcareEntry) {
+          if (!values.employerName) {
+            errors.employerName = requiredError;
+          }
+          if (values.startDateSick && !isDate(values.startDateSick)) {
+            errors.startDateSick = `Start date ${invalidError}`;
+          }
+          if (values.endDateSick && !isDate(values.endDateSick)) {
+            errors.endDateSick = `End date ${invalidError}`;
+          }
         }
+
+        if (values.type === TypeOfEntry.HealthCheckEntry) {
+          if (values.healthCheckRating === undefined) {
+            errors.healthCheckRating = requiredError;
+          }
+        }
+
+        if (values.type === TypeOfEntry.HospitalEntry) {
+          if (!values.dischargeCriteria) {
+            errors.dischargeCriteria = requiredError;
+          }
+          if (!values.dischargeDate || !isDate(values.dischargeDate )) {
+            errors.dischargeDate = `Discharge date ${invalidError}`;
+          }
+        }
+        //console.log(errors);
+
         return errors;
       }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
+        //console.log(isValid);
+        console.log(values, 4, null);
+        // console.log(dirty);
+
         return (
           <Form className="form ui">
             <SelectField
@@ -147,8 +181,8 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               component={TextField}
             />
             <DiagnosisSelection
-              setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
               diagnoses={Object.values(diagnoses)}
             />
             {/* <SelectField label="Gender" name="gender" options={genderOptions} /> */}
