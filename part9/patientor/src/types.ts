@@ -81,3 +81,14 @@ export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
 export type NewPatientEntry = Omit<Patient, 'id'>;
 
 export type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries?: unknown };
+export type FieldsForEntry = {
+    description: unknown,
+    date: unknown,
+    specialist: unknown,
+    type: unknown,
+    diagnosisCodes?: unknown,
+    discharge?: unknown,
+    employerName?: unknown,
+    sickLeave?: unknown,
+    healthCheckRating?: unknown
+};

@@ -1,6 +1,6 @@
 // import patients from '../../data/patientsData';
 import raw_patients from '../../data/patientData2';
-import { PublicPatient, NewPatientEntry, Patient } from '../types';
+import { PublicPatient, NewPatientEntry, Patient, EntryWithoutId, Entry } from '../types';
 import { v1 as uuid } from 'uuid';
 import { toNewPatient } from '../utils';
 
@@ -41,10 +41,25 @@ const addPatient = (patient: NewPatientEntry): Patient => {
     return NewPatientEntry;
 };
 
+const addEntry = (entry: EntryWithoutId, patientId: Patient["id"]): Entry => {
+    const id = String(uuid());
+    const NewEntry = {
+        id: id,
+        ...entry
+    };
+    const patient = patients.find(patient => patient.id === patientId);
+    if (!patient) {
+        throw new Error("Patient is not in the system");
+    }
+    patient.entries.push(NewEntry);
+    return NewEntry;
+};
+
 export default {
     getPatients,
     getNonSensitivePatients,
     PatientById,
-    addPatient
+    addPatient,
+    addEntry
 };
 
