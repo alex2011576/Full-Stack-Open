@@ -145,7 +145,7 @@ const isHealthCheckRating = (rating: any): rating is HealthCheckRating => {
     return Object.values(HealthCheckRating).includes(rating);
 };
 const parseHealthCheckRating = (healthCheckRating: unknown): HealthCheckRating => {
-    if (!healthCheckRating || !isHealthCheckRating(healthCheckRating)) {
+    if (typeof healthCheckRating !== 'number' || !isHealthCheckRating(healthCheckRating)) {
         throw new Error('Invalid or missing health rating:' + healthCheckRating);
     }
     return healthCheckRating;
@@ -173,15 +173,13 @@ const parseCodes = (codes: unknown): Array<Diagnosis['code']> | undefined => {
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isDischarge = (codes: any): codes is Discharge => {
+const isDischarge = (discharge: any): discharge is Discharge => {
 
-    for (let i = 0; i < codes.length; i++) {
-        if (!isString(codes[i])) {
-            return false;
-        }
+    if (!discharge["criteria"] || !isString(discharge["criteria"])) {
+        throw new Error(`Invalid formatting fields discharge.criteria: ${discharge["criteria"]}`);
     }
-    if (!parseAnyDate(codes["date"])) {
-        throw new Error(`Invalid formatting fields discharge.date: ${codes["date"]}`);
+    if (!parseAnyDate(discharge["date"])) {
+        throw new Error(`Invalid formatting fields discharge.date: ${discharge["date"]}`);
     }
     return true;
 };

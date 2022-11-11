@@ -8,14 +8,15 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-
+import { formatDate } from './../utils';
 
 const HealthCheck: React.FC<{ entry: HealthCheckEntry, findDiagnose: (code: Diagnosis['code']) => Diagnosis['name']}> = ({ entry, findDiagnose }) => {
+
   return (
     <Box mt={2} textAlign="left" >
       <Box sx={{ display: 'flex',  alignItems: 'center' }}>
         <Typography style={{ marginRight: '0.6rem' }} component="span">
-          {entry.date}
+          {formatDate(entry.date)}
         </Typography>
         <MedicalServicesIcon />
       </Box>

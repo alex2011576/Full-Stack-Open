@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Grid, Button } from '@material-ui/core';
-import { Field, Formik, Form, ErrorMessage } from 'formik';
+import { Field, Formik, Form } from 'formik';
 
 import { TextField, SelectField, EntryTypeOption, HealthRatingOption, DiagnosisSelection } from './FormField';
-import { Discharge, Entry, HealthCheckRating, TypeOfEntry } from '../types';
-import { EntryWithoutId, EntryFormValues } from '../types';
+import { HealthCheckRating, TypeOfEntry } from '../types';
+import {  EntryFormValues } from '../types';
 import { useStateValue } from '../state';
-import { Typography } from '@material-ui/core';
 
 interface Props {
     onSubmit: (values: EntryFormValues) => void;

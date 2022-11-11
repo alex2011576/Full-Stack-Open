@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
-import { ErrorMessage, Field, FieldProps, FormikProps, validateYupSchema } from 'formik';
+import { ErrorMessage, Field, FieldProps, FormikProps } from 'formik';
 import {
   Select,
   FormControl,

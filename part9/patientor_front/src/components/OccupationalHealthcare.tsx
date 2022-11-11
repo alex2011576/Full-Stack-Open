@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import WorkIcon from '@mui/icons-material/Work';
 import Typography from '@mui/material/Typography';
+import { formatDate } from '../utils';
 
 
 const OccupationalHealthcare: React.FC<{ entry: OccupationalHealthcareEntry , findDiagnose: (code: Diagnosis['code']) => Diagnosis['name']}> = ({ entry, findDiagnose }) => {
@@ -14,7 +15,7 @@ const OccupationalHealthcare: React.FC<{ entry: OccupationalHealthcareEntry , fi
     <Box mt={2} textAlign="left" >
       <Box sx={{ display: 'flex',  alignItems: 'center' }}>
         <Typography style={{ marginRight: '0.6rem' }} component="span">
-          {entry.date}
+          {formatDate(entry.date)}
         </Typography>
         <WorkIcon />
         <Typography style={{  fontStyle: 'italic', marginLeft: '0.3rem' }}>{entry.employerName}</Typography>
@@ -38,7 +39,7 @@ const OccupationalHealthcare: React.FC<{ entry: OccupationalHealthcareEntry , fi
           : ''
         }
         {entry.sickLeave
-          ? <Typography style={{ color: 'red', marginTop: '0.5rem', marginLeft: '0.2rem', }} variant="h6">Sick leave was issued from {entry.sickLeave.startDate} until {entry.sickLeave.endDate}</Typography>
+          ? <Typography style={{ color: 'red', marginTop: '0.5rem', marginLeft: '0.2rem', }} variant="h6">Sick leave was issued from {formatDate(entry.sickLeave.startDate)} until {formatDate(entry.sickLeave.endDate)}</Typography>
           : ''
         }
       </Box>

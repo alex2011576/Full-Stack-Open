@@ -2,7 +2,6 @@ import express from 'express';
 import patientsService from '../services/patientsService';
 import { toNewEntry, toNewPatient } from '../utils';
 
-
 const router = express.Router();
 
 router.get('/', (_req, res) => {
@@ -20,8 +19,6 @@ router.get('/:id', (req, res) => {
         res.sendStatus(404);
     }
 });
-
-
 
 router.post('/', (req, res) => {
     try {
@@ -54,5 +51,3 @@ router.post('/:id/entries', (req, res) => {
 });
 
 export default router;
-
-

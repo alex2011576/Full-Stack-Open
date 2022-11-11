@@ -14,11 +14,6 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-
-// import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-// import WorkIcon from '@mui/icons-material/Work';
-// import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
 import OccupationalHealthcare from '../components/OccupationalHealthcare';
 import HealthCheck from '../components/HealthCheck';
 import Hospital from '../components/HospitalEntry';
@@ -36,8 +31,7 @@ const PatientInfoPage = () => {
 
   const { id } = useParams<{ id: string }>();
   const [{ fetchedPatients, diagnoses } , dispatch] = useStateValue();
-  // console.log(JSON.stringify(diagnoses, null, 4));
-  // const [error, setError] = React.useState<string>('');
+
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>();
 
@@ -55,7 +49,7 @@ const PatientInfoPage = () => {
   const patient: FetchedPatient | undefined = Object.values(fetchedPatients).find((patient) => patient.id === id);
 
   React.useEffect(() => {
-    console.log('useeffect');
+    //console.log('useeffect');
     const fetchPatient = async () => {
       if (patient) {
         return ;
