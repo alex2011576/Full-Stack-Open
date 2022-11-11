@@ -58,37 +58,19 @@ interface TextProps extends FieldProps {
   placeholder: string;
 }
 
-// export const TextField = ({ field, label, placeholder }: TextProps) => (
-//   <div style={{ marginBottom: '1em' }}>
-//     <TextFieldMUI
-//       fullWidth
-//       label={label}
-//       placeholder={placeholder}
-//       {...field}
-//     />
-//     <Typography variant="subtitle2" style={{ color: 'red' }}>
-//       <ErrorMessage name={field.name} />
-//     </Typography>
-//   </div>
-// );
-
-export const TextField = ({ field, label, placeholder }: TextProps) => {
-  //const nameArr = field.name.split('.');
-  //console.log(typeof field.name);
-
-  return (
-    <div style={{ marginBottom: '1em' }}>
-      <TextFieldMUI
-        fullWidth
-        label={label}
-        placeholder={placeholder}
-        {...field}
-      />
-      <Typography variant="subtitle2" style={{ color: 'red' }}>
-        <ErrorMessage name={`${field.name}`} />
-      </Typography>
-    </div>
-  );};
+export const TextField = ({ field, label, placeholder }: TextProps) => (
+  <div style={{ marginBottom: '1em' }}>
+    <TextFieldMUI
+      fullWidth
+      label={label}
+      placeholder={placeholder}
+      {...field}
+    />
+    <Typography variant="subtitle2" style={{ color: 'red' }}>
+      <ErrorMessage name={field.name} />
+    </Typography>
+  </div>
+);
 
 /*
   for exercises 9.24.-
@@ -142,7 +124,6 @@ export const DiagnosisSelection = ({
     setDiagnoses([...data]);
     setFieldTouched(field, true);
     setFieldValue(field, [...data]);
-    console.log([...data]);
   };
 
   const stateOptions = diagnoses.map((diagnosis) => ({

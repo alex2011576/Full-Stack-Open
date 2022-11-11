@@ -52,7 +52,7 @@ const PatientInfoPage = () => {
     return null;
   }
 
-  let patient: FetchedPatient | undefined = Object.values(fetchedPatients).find((patient) => patient.id === id);
+  const patient: FetchedPatient | undefined = Object.values(fetchedPatients).find((patient) => patient.id === id);
 
   React.useEffect(() => {
     console.log('useeffect');
@@ -82,16 +82,34 @@ const PatientInfoPage = () => {
   }, [dispatch, id, patient]);
 
   const submitNewEntry = async (values: EntryFormValues) => {
+    const parsedValues = {
+      type: values.type,
+      description: values.description,
+      date: values.date,
+      specialist: values.specialist,
+      diagnosisCodes: values.diagnosisCodes,
+      employerName: values.employerName,
+      sickLeave:{
+        startDate: values.startDateSick,
+        endDate: values.endDateSick
+      },
+      discharge: {
+        date: values.dischargeDate,
+        criteria: values.dischargeCriteria
+      },
+      healthCheckRating: values.healthCheckRating
+    };
     try {
       const { data: newEntry } = await axios.post<Entry>(
         `${apiBaseUrl}/patients/${id}/entries`,
-        values
+        parsedValues
       );
       if (newEntry) {
-        patient = undefined;
+        const { data: patientInfo } = await axios.get<FetchedPatient>(
+          `${apiBaseUrl}/patients/${id}`
+        );
+        dispatch(addFetchedPatient(patientInfo));
       }
-      // dispatch({ type: "ADD_PATIENT", payload: newPatient });
-      // dispatch(add(newEntry));
       closeModal();
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {

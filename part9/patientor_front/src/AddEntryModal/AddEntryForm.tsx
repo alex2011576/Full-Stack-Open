@@ -146,13 +146,11 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           }
         }
         //console.log(errors);
-
         return errors;
       }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched, values }) => {
         //console.log(isValid);
-        console.log(values, 4, null);
         // console.log(dirty);
 
         return (
@@ -185,7 +183,6 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               setFieldValue={setFieldValue}
               diagnoses={Object.values(diagnoses)}
             />
-            {/* <SelectField label="Gender" name="gender" options={genderOptions} /> */}
             {EntryTypeFields(values.type)}
             <Grid>
               <Grid item>

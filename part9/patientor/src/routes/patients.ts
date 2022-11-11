@@ -24,11 +24,9 @@ router.get('/:id', (req, res) => {
 
 
 router.post('/', (req, res) => {
-    // const { name, dateOfBirth, ssn, gender, occupation } = req.body;
     try {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const newPatient = toNewPatient(req.body);
-
         const addedPatient = patientsService.addPatient(newPatient);
         res.json(addedPatient);
     } catch (error: unknown) {
