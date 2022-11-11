@@ -22,7 +22,8 @@ const OccupationalHealthcare: React.FC<{ entry: OccupationalHealthcareEntry , fi
       <Box sx={{}}>
         <Typography style={{  fontStyle: 'italic' }}>{entry.description}</Typography>
         <Typography> diagnosed by {entry.specialist}</Typography>
-        { entry.diagnosisCodes && Array.isArray(entry.diagnosisCodes) && entry.diagnosisCodes.length &&
+        { entry.diagnosisCodes && Array.isArray(entry.diagnosisCodes) && entry.diagnosisCodes.length
+          ?
           <List
             sx = {{
               listStyleType: 'disc',
@@ -33,8 +34,8 @@ const OccupationalHealthcare: React.FC<{ entry: OccupationalHealthcareEntry , fi
             }}>
             <ListSubheader component="div" color="inherit" disableGutters><Typography variant="h6">Diagnosis:</Typography></ListSubheader>
             {entry.diagnosisCodes?.map(code => <ListItem  key={code} disablePadding sx={{ ml: 4 }}><ListItemText sx={{ ml: 0 }} primary={`${code} ${findDiagnose(code)}`} /></ListItem>)}
-            {/* {entry.diagnosisCodes?.map(code => <ListItem dense={true} key={code} disablePadding><ListItemText sx={{ml: 0}} primary={code} /></ListItem>)} */}
           </List>
+          : ''
         }
         {entry.sickLeave
           ? <Typography style={{ color: 'red', marginTop: '0.5rem', marginLeft: '0.2rem', }} variant="h6">Sick leave was issued from {entry.sickLeave.startDate} until {entry.sickLeave.endDate}</Typography>

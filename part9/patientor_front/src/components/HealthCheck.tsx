@@ -23,7 +23,8 @@ const HealthCheck: React.FC<{ entry: HealthCheckEntry, findDiagnose: (code: Diag
         <Typography style={{  fontStyle: 'italic' }}>{entry.description}</Typography>
         <HealthRatingBar showText={false} rating={entry.healthCheckRating} />
         <Typography> diagnosed by {entry.specialist}</Typography>
-        { entry.diagnosisCodes && Array.isArray(entry.diagnosisCodes) && entry.diagnosisCodes.length &&
+        { entry.diagnosisCodes && Array.isArray(entry.diagnosisCodes) && entry.diagnosisCodes.length
+          ?
           <List
             sx = {{
               listStyleType: 'disc',
@@ -34,8 +35,8 @@ const HealthCheck: React.FC<{ entry: HealthCheckEntry, findDiagnose: (code: Diag
             }}>
             <ListSubheader component="div" color="inherit" disableGutters><Typography variant="h6">Diagnosis:</Typography></ListSubheader>
             {entry.diagnosisCodes?.map(code => <ListItem  key={code} disablePadding sx={{ ml: 4 }}><ListItemText sx={{ ml: 0 }} primary={`${code} ${findDiagnose(code)}`} /></ListItem>)}
-            {/* {entry.diagnosisCodes?.map(code => <ListItem dense={true} key={code} disablePadding><ListItemText sx={{ml: 0}} primary={code} /></ListItem>)} */}
           </List>
+          : ''
         }
       </Box>
     </Box>
