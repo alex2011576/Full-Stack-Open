@@ -16,6 +16,7 @@ app.use(
     ':method :url :status :res[content-length] - :response-time ms :bodyPOST'
   )
 )
+app.use(express.static('build'))
 app.use(express.json())
 
 let persons = [
