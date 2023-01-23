@@ -1,0 +1,105 @@
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+	"description": "Test",
+	"date": "2015-03-12",
+	"specialist": "Aleksei",
+	"diagnosisCodes": ["123"],
+	"type": "HealthCheck",
+	"healthCheckRating": 3
+}
+
+###
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+	"description": "Test",
+	"date": "2015-03-12",
+	"specialist": "Aleksei",
+	"diagnosisCodes": ["123"],
+	"type": "HealthCheck",
+	"healthCheckRating": 6
+}
+
+###
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+	"description": "Test",
+	"date": "2018-01-02",
+	"specialist": "Aleksei",
+	"diagnosisCodes": ["123"],
+	"type": "OccupationalHealthcare",
+	"employerName": "Hive H",
+	"sickLeave": {
+		"startDate": "2018-08-28",
+		"endDate": "2018-08-28"
+	}
+}
+###
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+	"description": "Test",
+	"date": "2018-01-02",
+	"specialist": "Aleksei",
+	"diagnosisCodes": ["123"],
+	"type": "OccupationalHealthcare",
+	"employerName": "Hive H",
+	"sickLeave": {
+		"startDate": "",
+		"endDate": "2018-08-28"
+	}
+}
+###
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+	"description": "Test",
+	"date": "2018-01-02",
+	"specialist": "Aleksei",
+	"diagnosisCodes": ["123"],
+	"type": "OccupationalHealthcare",
+	"employerName": "Hive H"
+}
+
+###
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+	"description": "Test",
+	"date": "2018-01-02",
+	"specialist": "Aleksei",
+	"diagnosisCodes": ["23"],
+	"type": "Hospital",
+	"discharge": {
+		"date": "2015-01-13",
+		"criteria": "criteria"
+	}
+}
+###
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+	"description": "Test",
+	"date": "2018-01-02",
+	"specialist": "Aleksei",
+	"diagnosisCodes": ["23"],
+	"type": "Hospital",
+	"discharge": {
+		"date": "2015-01-13",
+		"criteria": ""
+	}
+}
